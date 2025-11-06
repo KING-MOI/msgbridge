@@ -1,3 +1,4 @@
 - considered link checker; parked for now
 - follow up on exit codes
 - follow up on release checklist
+- follow up on error messages
