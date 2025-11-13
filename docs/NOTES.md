@@ -45,3 +45,4 @@
 - considered config defaults; parked for now
 - double-check type narrowing behavior
 - cache miss observed while testing
+- slow start observed while testing
