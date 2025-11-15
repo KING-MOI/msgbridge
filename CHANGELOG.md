@@ -5,3 +5,4 @@
 - double-check exit codes behavior
 - flaky test observed while testing
 - flaky test observed while testing
+- double-check docs example behavior
