@@ -1,1 +1,2 @@
 - double-check ci caching behavior
+- follow up on docs example
