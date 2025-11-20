@@ -8,3 +8,4 @@
 - double-check docs example behavior
 - follow up on config defaults
 - follow up on cleanup logic
+- double-check error messages behavior
