@@ -3,3 +3,4 @@
 - follow up on the macOS build
 - follow up on the retry path
 - double-check exit codes behavior
+- flaky test observed while testing
