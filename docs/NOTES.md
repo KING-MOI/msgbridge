@@ -44,3 +44,4 @@
 - flaky test observed while testing
 - considered config defaults; parked for now
 - double-check type narrowing behavior
+- cache miss observed while testing
