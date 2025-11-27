@@ -13,3 +13,4 @@
 - considered config defaults; parked for now
 - flaky test observed while testing
 - flaky test observed while testing
+- follow up on release checklist
