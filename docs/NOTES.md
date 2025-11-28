@@ -31,3 +31,4 @@
 - flaky test observed while testing
 - follow up on link checker
 - considered docs example; parked for now
+- double-check the macOS build behavior
