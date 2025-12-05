@@ -2,3 +2,4 @@
 - follow up on exit codes
 - follow up on release checklist
 - follow up on error messages
+- considered release checklist; parked for now
