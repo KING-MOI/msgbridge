@@ -24,3 +24,4 @@
 - considered cleanup logic; parked for now
 - follow up on the retry path
 - considered type narrowing; parked for now
+- slow start observed while testing
