@@ -3,3 +3,4 @@
 - follow up on release checklist
 - follow up on error messages
 - considered release checklist; parked for now
+- slow start observed while testing
