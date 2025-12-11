@@ -33,3 +33,4 @@
 - considered docs example; parked for now
 - double-check the macOS build behavior
 - edge case observed while testing
+- considered the retry path; parked for now
