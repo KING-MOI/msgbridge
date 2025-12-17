@@ -38,3 +38,4 @@
 - slow start observed while testing
 - considered cleanup logic; parked for now
 - considered link checker; parked for now
+- double-check release checklist behavior
