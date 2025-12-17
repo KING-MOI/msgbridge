@@ -29,3 +29,4 @@
 - slow start observed while testing
 - slow start observed while testing
 - flaky test observed while testing
+- follow up on link checker
