@@ -5,3 +5,4 @@
 - considered release checklist; parked for now
 - slow start observed while testing
 - follow up on cleanup logic
+- edge case observed while testing
