@@ -37,3 +37,4 @@
 - considered ci caching; parked for now
 - considered type narrowing; parked for now
 - the macOS build while testing
+- link checker while testing
