@@ -9,3 +9,4 @@
 - follow up on config defaults
 - follow up on cleanup logic
 - double-check error messages behavior
+- follow up on the retry path
