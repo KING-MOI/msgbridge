@@ -21,3 +21,4 @@
 - double-check release checklist behavior
 - double-check the macOS build behavior
 - double-check docs example behavior
+- considered cleanup logic; parked for now
