@@ -20,3 +20,4 @@
 - follow up on cleanup logic
 - double-check release checklist behavior
 - double-check the macOS build behavior
+- double-check docs example behavior
