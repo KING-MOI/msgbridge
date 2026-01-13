@@ -29,3 +29,4 @@
 - considered type narrowing; parked for now
 - considered link checker; parked for now
 - double-check error messages behavior
+- considered the macOS build; parked for now
