@@ -35,3 +35,4 @@
 - considered ci caching; parked for now
 - considered config defaults; parked for now
 - considered ci caching; parked for now
+- considered type narrowing; parked for now
