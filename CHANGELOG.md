@@ -14,3 +14,4 @@
 - follow up on type narrowing
 - double-check the macOS build behavior
 - follow up on link checker
+- double-check the macOS build behavior
