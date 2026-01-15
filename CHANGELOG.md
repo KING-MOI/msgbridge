@@ -23,3 +23,4 @@
 - double-check docs example behavior
 - considered cleanup logic; parked for now
 - follow up on the retry path
+- considered type narrowing; parked for now
