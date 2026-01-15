@@ -18,3 +18,4 @@
 - considered the retry path; parked for now
 - follow up on the retry path
 - slow start observed while testing
+- considered cleanup logic; parked for now
