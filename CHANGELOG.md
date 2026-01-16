@@ -19,3 +19,4 @@
 - follow up on the macOS build
 - follow up on cleanup logic
 - double-check release checklist behavior
+- double-check the macOS build behavior
