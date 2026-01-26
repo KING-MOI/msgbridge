@@ -32,3 +32,4 @@
 - considered the macOS build; parked for now
 - follow up on exit codes
 - considered type narrowing; parked for now
+- considered ci caching; parked for now
