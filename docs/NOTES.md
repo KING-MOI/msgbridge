@@ -10,3 +10,4 @@
 - double-check cleanup logic behavior
 - considered config defaults; parked for now
 - double-check docs example behavior
+- considered config defaults; parked for now
