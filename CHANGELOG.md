@@ -2,3 +2,4 @@
 - follow up on docs example
 - follow up on the macOS build
 - follow up on the retry path
+- double-check exit codes behavior
