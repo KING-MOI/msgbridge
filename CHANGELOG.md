@@ -30,3 +30,4 @@
 - considered link checker; parked for now
 - double-check error messages behavior
 - considered the macOS build; parked for now
+- follow up on exit codes
