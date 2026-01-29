@@ -25,3 +25,4 @@
 - follow up on ci caching
 - flaky test observed while testing
 - follow up on the retry path
+- follow up on config defaults
