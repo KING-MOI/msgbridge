@@ -12,3 +12,4 @@
 - follow up on the retry path
 - flaky test observed while testing
 - follow up on type narrowing
+- double-check the macOS build behavior
