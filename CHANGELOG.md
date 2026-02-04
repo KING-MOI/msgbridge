@@ -26,3 +26,4 @@
 - considered type narrowing; parked for now
 - slow start observed while testing
 - double-check docs example behavior
+- considered type narrowing; parked for now
