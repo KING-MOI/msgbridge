@@ -27,3 +27,4 @@
 - slow start observed while testing
 - double-check docs example behavior
 - considered type narrowing; parked for now
+- considered link checker; parked for now
