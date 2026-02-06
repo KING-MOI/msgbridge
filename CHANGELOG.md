@@ -1,3 +1,4 @@
 - double-check ci caching behavior
 - follow up on docs example
 - follow up on the macOS build
+- follow up on the retry path
