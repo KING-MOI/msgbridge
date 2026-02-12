@@ -7,3 +7,4 @@
 - follow up on cleanup logic
 - edge case observed while testing
 - edge case observed while testing
+- double-check cleanup logic behavior
