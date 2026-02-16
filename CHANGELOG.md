@@ -17,3 +17,4 @@
 - double-check the macOS build behavior
 - considered docs example; parked for now
 - follow up on the macOS build
+- follow up on cleanup logic
