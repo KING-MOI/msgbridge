@@ -13,3 +13,4 @@
 - flaky test observed while testing
 - follow up on type narrowing
 - double-check the macOS build behavior
+- follow up on link checker
