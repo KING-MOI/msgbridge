@@ -8,3 +8,4 @@
 - edge case observed while testing
 - edge case observed while testing
 - double-check cleanup logic behavior
+- considered config defaults; parked for now
