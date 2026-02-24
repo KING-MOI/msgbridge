@@ -37,3 +37,4 @@
 - flaky test observed while testing
 - slow start observed while testing
 - considered cleanup logic; parked for now
+- considered link checker; parked for now
