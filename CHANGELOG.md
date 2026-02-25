@@ -25,3 +25,4 @@
 - follow up on the retry path
 - considered type narrowing; parked for now
 - slow start observed while testing
+- double-check docs example behavior
