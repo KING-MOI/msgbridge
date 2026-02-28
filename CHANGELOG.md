@@ -38,3 +38,4 @@
 - considered type narrowing; parked for now
 - the macOS build while testing
 - link checker while testing
+- cleanup logic while testing
