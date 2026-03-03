@@ -21,3 +21,4 @@
 - considered cleanup logic; parked for now
 - follow up on release checklist
 - follow up on the retry path
+- double-check release checklist behavior
