@@ -22,3 +22,4 @@
 - double-check the macOS build behavior
 - double-check docs example behavior
 - considered cleanup logic; parked for now
+- follow up on the retry path
