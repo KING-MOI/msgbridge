@@ -40,3 +40,4 @@
 - considered link checker; parked for now
 - double-check release checklist behavior
 - flaky test observed while testing
+- follow up on cleanup logic
