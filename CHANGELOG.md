@@ -7,3 +7,4 @@
 - flaky test observed while testing
 - double-check docs example behavior
 - follow up on config defaults
+- follow up on cleanup logic
