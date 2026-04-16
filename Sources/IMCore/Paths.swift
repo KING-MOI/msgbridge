@@ -25,7 +25,7 @@ public struct Paths: Sendable, Equatable {
         path.utf8.count + 1 <= maxSocketPathBytes
     }
 
-    /// `~/Library/Application Support/iMessage Agent`, mode 0700. Holds the policy store, journal, uploads and log.
+    /// `~/Library/Application Support/MsgBridge`, mode 0700. Holds the policy store, journal, uploads and log.
     public var appSupportDir: URL {
         home.appendingPathComponent("Library/Application Support/\(AppIdentity.appName)", isDirectory: true)
     }
@@ -33,8 +33,8 @@ public struct Paths: Sendable, Equatable {
     /// Primary socket path: `<appSupportDir>/bridge.sock`.
     public var primarySocketPath: String { appSupportDir.appendingPathComponent("bridge.sock").path }
 
-    /// Fallback socket path for long home paths: `~/.imessage-agent/bridge.sock`.
-    public var fallbackSocketPath: String { home.appendingPathComponent(".imessage-agent/bridge.sock").path }
+    /// Fallback socket path for long home paths: `~/.msgbridge/bridge.sock`.
+    public var fallbackSocketPath: String { home.appendingPathComponent(".msgbridge/bridge.sock").path }
 
     /// The socket path launchd listens on (LaunchAgent `Sockets`, mode 0600). Primary if it fits, else the fallback.
     public func resolvedSocketPath() throws -> String {
@@ -59,10 +59,10 @@ public struct Paths: Sendable, Equatable {
     /// Bridge stderr log named in the LaunchAgent plist.
     public var logURL: URL { appSupportDir.appendingPathComponent("bridge.log") }
 
-    /// Staging folder inside Messages' sandbox reach: `~/Pictures/iMessage Agent` (section 3 item 7, S2).
+    /// Staging folder inside Messages' sandbox reach: `~/Pictures/MsgBridge` (section 3 item 7, S2).
     public var stagingDir: URL { home.appendingPathComponent("Pictures/\(AppIdentity.appName)", isDirectory: true) }
 
-    /// `~/Library/Caches/io.github.krishhgg.imessage-agent`, mode 0700.
+    /// `~/Library/Caches/com.adityaverma.msgbridge`, mode 0700.
     public var cacheDir: URL { home.appendingPathComponent("Library/Caches/\(AppIdentity.bundleID)", isDirectory: true) }
 
     /// Viewable attachment copies, HEIC converted to JPEG, expiring after 24 h (section 1, `attachment` op).

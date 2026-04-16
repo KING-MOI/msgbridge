@@ -251,7 +251,7 @@ public final class DoctorService {
         let axTrusted = accessibility == .granted
         if args.wantUIActions {
             checks.append(DoctorCheck(name: "Accessibility", ok: axTrusted, detail: accessibility.rawValue,
-                                      fix: axTrusted ? nil : "turn on iMessage Agent in Privacy & Security > Accessibility"))
+                                      fix: axTrusted ? nil : "turn on MsgBridge in Privacy & Security > Accessibility"))
         }
 
         switch c.policy.load() {
@@ -299,7 +299,7 @@ public final class DoctorService {
             return DoctorCheck(name: name, ok: true, detail: state.rawValue)
         case .denied:
             return DoctorCheck(name: name, ok: false, detail: state.rawValue,
-                               fix: "allow Messages for iMessage Agent in Privacy & Security > Automation")
+                               fix: "allow Messages for MsgBridge in Privacy & Security > Automation")
         case .notDetermined:
             return DoctorCheck(name: name, ok: false, detail: state.rawValue,
                                fix: "answer the Automation prompt on the Mac")
@@ -340,6 +340,6 @@ public final class DoctorService {
         let missing = UINames.classicTapbacks.filter { !newest.actionNames.contains($0) }
         if missing.isEmpty { return DoctorCheck(name: "action names", ok: true, detail: "tapbacks found") }
         return DoctorCheck(name: "action names", ok: false, detail: "missing: " + missing.joined(separator: ", "),
-                           fix: "set the macOS language to English, or update iMessage Agent")
+                           fix: "set the macOS language to English, or update MsgBridge")
     }
 }

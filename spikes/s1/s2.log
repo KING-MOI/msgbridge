@@ -6,7 +6,7 @@
 09:38:05 sendfile: staged=tmp as_ok result=sent ms=74
 09:38:05 +1s rowid=1110015 guid=32C8C6D4 from_me=1 sent=0 delivered=0 finished=1 read=0 err=0 svc=iMessage item=0 assoc=0 text_null=1 ab=260 match=0 has_att=1 handle_is_self=true chat=? dest_is_self=0 deliver_s=- reply=0
 09:38:06 +2s rowid=1110015 guid=32C8C6D4 from_me=1 sent=0 delivered=0 finished=1 read=0 err=25 svc=iMessage item=0 assoc=0 text_null=1 ab=260 match=0 has_att=1 handle_is_self=true chat=self dest_is_self=0 deliver_s=- reply=0
-09:38:30 atts: att=42536 state=6 mime=text/plain bytes=23 name=s2-a8734a42.txt out=1 msg=1110015 stored=/var/tmp/com.apple.messages/iMessageAgentSpike/s2-a8734a42.txt
+09:38:30 atts: att=42536 state=6 mime=text/plain bytes=23 name=s2-a8734a42.txt out=1 msg=1110015 stored=/var/tmp/com.apple.messages/MsgBridgeSpike/s2-a8734a42.txt
 == file send via pictures
 09:38:30 sendfile: staged=pictures as_ok result=sent ms=35
 09:38:30 +1s rowid=1110016 guid=D068B16A from_me=1 sent=0 delivered=0 finished=1 read=0 err=0 svc=iMessage item=0 assoc=0 text_null=1 ab=260 match=0 has_att=1 handle_is_self=true chat=? dest_is_self=0 deliver_s=- reply=0

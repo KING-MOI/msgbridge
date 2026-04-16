@@ -5,7 +5,7 @@ import IMCore
 
 /// doctor's silent Automation check. It never starts Messages, and only a denial points at System Settings.
 final class DoctorTests: XCTestCase {
-    private static let settingsFix = "allow Messages for iMessage Agent in Privacy & Security > Automation"
+    private static let settingsFix = "allow Messages for MsgBridge in Privacy & Security > Automation"
 
     private func automation(_ state: PermissionState, running: Bool, closed: Bool = false) throws -> DoctorCheck {
         let h = try Harness()

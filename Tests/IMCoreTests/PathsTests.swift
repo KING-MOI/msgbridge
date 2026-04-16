@@ -1,10 +1,10 @@
 import XCTest
 import IMCore
 
-/// Section 1: the socket path is 104 bytes or less with its NUL, with `~/.imessage-agent/bridge.sock` as fallback.
+/// Section 1: the socket path is 104 bytes or less with its NUL, with `~/.msgbridge/bridge.sock` as fallback.
 final class PathsTests: XCTestCase {
-    static let primarySuffix = "/Library/Application Support/iMessage Agent/bridge.sock"
-    static let fallbackSuffix = "/.imessage-agent/bridge.sock"
+    static let primarySuffix = "/Library/Application Support/MsgBridge/bridge.sock"
+    static let fallbackSuffix = "/.msgbridge/bridge.sock"
 
     func paths(_ home: String) -> Paths { Paths(home: URL(fileURLWithPath: home, isDirectory: true)) }
 
@@ -70,6 +70,6 @@ final class PathsTests: XCTestCase {
             XCTAssertEqual(try paths(h).resolvedSocketPath(), try paths(h).resolvedSocketPath())
         }
         XCTAssertEqual(try paths("/Users/someone").resolvedSocketPath(),
-                       "/Users/someone/Library/Application Support/iMessage Agent/bridge.sock")
+                       "/Users/someone/Library/Application Support/MsgBridge/bridge.sock")
     }
 }

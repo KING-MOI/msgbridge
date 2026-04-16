@@ -7,7 +7,7 @@ import Foundation
 import SQLite3
 
 let buildTag = "S1-BUILD-1"
-let label = "local.imessageagent.spike"
+let label = "local.msgbridge.spike"
 
 @_silgen_name("launch_activate_socket")
 func launch_activate_socket(_ name: UnsafePointer<CChar>,
@@ -142,7 +142,7 @@ final class PanelController: NSObject {
         let p = NSPanel(contentRect: NSRect(x: 0, y: 0, width: 380, height: 150),
                         styleMask: [.titled, .nonactivatingPanel, .utilityWindow],
                         backing: .buffered, defer: false)
-        p.title = "iMessage Agent Spike"
+        p.title = "MsgBridge Spike"
         p.level = .statusBar
         p.collectionBehavior = [.canJoinAllSpaces, .fullScreenAuxiliary, .stationary]
         p.isFloatingPanel = true
@@ -310,10 +310,10 @@ end quit_messages
 
 func stagingDir(_ kind: String) -> String? {
     switch kind {
-    case "tmp": return "/private/var/tmp/com.apple.messages/iMessageAgentSpike"
-    case "pictures": return NSHomeDirectory() + "/Pictures/iMessageAgentSpike"
-    case "attachments": return NSHomeDirectory() + "/Library/Messages/Attachments/iMessageAgentSpike"
-    case "downloads": return NSHomeDirectory() + "/Downloads/iMessageAgentSpike"
+    case "tmp": return "/private/var/tmp/com.apple.messages/MsgBridgeSpike"
+    case "pictures": return NSHomeDirectory() + "/Pictures/MsgBridgeSpike"
+    case "attachments": return NSHomeDirectory() + "/Library/Messages/Attachments/MsgBridgeSpike"
+    case "downloads": return NSHomeDirectory() + "/Downloads/MsgBridgeSpike"
     default: return nil
     }
 }

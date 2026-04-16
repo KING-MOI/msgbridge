@@ -4,7 +4,7 @@ import IMTestSupport
 
 final class IMCoreSkeletonTests: XCTestCase {
     func testIdentityAndSocketPath() {
-        XCTAssertEqual(AppIdentity.bundleID, "io.github.krishhgg.imessage-agent")
+        XCTAssertEqual(AppIdentity.bundleID, "com.adityaverma.msgbridge")
         XCTAssertEqual(AppIdentity.launchAgentLabel, AppIdentity.bundleID)
         let paths = Paths(home: URL(fileURLWithPath: "/Users/someone", isDirectory: true))
         XCTAssertTrue(Paths.socketPathFits(paths.primarySocketPath))

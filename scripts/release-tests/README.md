@@ -26,15 +26,15 @@ The Swift tools compile on first use into the run's `bin/` folder with `swiftc` 
    ```
 2. Install the release from `out/`, then turn on the grants:
    ```sh
-   IMESSAGE_AGENT_TARBALL="$PWD/out/imessage-agent-<version>.tar.gz" bash out/install.sh
+   MSGBRIDGE_TARBALL="$PWD/out/msgbridge-<version>.tar.gz" bash out/install.sh
    ~/.local/bin/imessage setup
    ~/.local/bin/imessage doctor --ui
    ```
 3. Swap in the release-test build:
    ```sh
-   rsync -a --delete "out/release-tests/iMessage Agent.app/" "$HOME/Applications/iMessage Agent.app/"
+   rsync -a --delete "out/release-tests/MsgBridge.app/" "$HOME/Applications/MsgBridge.app/"
    cp out/release-tests/imessage "$HOME/.local/bin/imessage"
-   launchctl kickstart -k "gui/$(id -u)/io.github.krishhgg.imessage-agent"
+   launchctl kickstart -k "gui/$(id -u)/com.adityaverma.msgbridge"
    ```
    It has the same bundle id and signing identity, so the grants carry over. `imessage caps` now says "release-test build" and reports every capability as supported. `run.sh` refuses to start without that header.
 4. For test 5 only, give your terminal app Accessibility in System Settings, Privacy & Security, so `hid-inject` can post events. Turn it off after the run.
@@ -67,7 +67,7 @@ Run test 7 first (below), then the main run with its outcome file, and the foreg
 
 ```sh
 export IMSG_TEST_HANDLE=you@example.com
-scripts/release-tests/run.sh --with-t7 /Users/Shared/imessage-agent-t7.txt   # tests 1, 2, 3, 6a and 8, plus 7
+scripts/release-tests/run.sh --with-t7 /Users/Shared/msgbridge-t7.txt   # tests 1, 2, 3, 6a and 8, plus 7
 scripts/release-tests/run.sh --foreground --only t4,t5,t6b                    # foreground tests, on another day
 ```
 
@@ -76,19 +76,19 @@ scripts/release-tests/run.sh --foreground --only t4,t5,t6b                    # 
 Test 7 runs on a fresh macOS user account, on the same macOS major.minor. From the repo in your own account, copy this folder and `out/`:
 
 ```sh
-mkdir -p /Users/Shared/imessage-agent-t7
-cp -R scripts/release-tests out /Users/Shared/imessage-agent-t7/
+mkdir -p /Users/Shared/msgbridge-t7
+cp -R scripts/release-tests out /Users/Shared/msgbridge-t7/
 ```
 
 Log in as the new user, then:
 
 ```sh
-cd /Users/Shared/imessage-agent-t7
-IMESSAGE_AGENT_TARBALL="$PWD/out/imessage-agent-<version>.tar.gz" bash out/install.sh
+cd /Users/Shared/msgbridge-t7
+MSGBRIDGE_TARBALL="$PWD/out/msgbridge-<version>.tar.gz" bash out/install.sh
 IMSG_TEST_HANDLE=you@example.com release-tests/t7-fresh-account.sh
 ```
 
-Its log goes to `~/imessage-agent-release-tests/` in that account. It writes `/Users/Shared/imessage-agent-t7.txt`, which holds only its outcome lines. It never writes over a file that is already there, so delete an older copy first from the account that made it. Back in your own account, pass the file with `--with-t7`.
+Its log goes to `~/msgbridge-release-tests/` in that account. It writes `/Users/Shared/msgbridge-t7.txt`, which holds only its outcome lines. It never writes over a file that is already there, so delete an older copy first from the account that made it. Back in your own account, pass the file with `--with-t7`.
 
 What to expect:
 - The bridge allows 30 sends per chat in 24 hours. A run without `--foreground` sends about 15 messages to your own chat, and tests 4, 5 and 6b send about 22 more, so run them on different days.
@@ -128,7 +128,7 @@ After a run, commit `packaging/release-evidence.json`, rebuild with `scripts/bui
 
 ## Bridge markers
 
-Tests 4, 5 and 6b time the foreground steps from lines the release-test build writes to `~/Library/Application Support/iMessage Agent/bridge.log` right before each step:
+Tests 4, 5 and 6b time the foreground steps from lines the release-test build writes to `~/Library/Application Support/MsgBridge/bridge.log` right before each step:
 
 ```
 release-test <unix ms> <event> [detail]

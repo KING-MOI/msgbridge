@@ -17,7 +17,7 @@ rt_init 1
 
 SELF="$IMSG_TEST_HANDLE"
 NOTE_FILE="$RESULTS/files/release-test-note.txt"
-echo "imessage-agent release test file $(date +%Y%m%d-%H%M%S)" >"$NOTE_FILE"
+echo "msgbridge release test file $(date +%Y%m%d-%H%M%S)" >"$NOTE_FILE"
 TARGET=""
 
 setup_cold() { wait_messages_quit && front_other_app; }
@@ -104,7 +104,7 @@ setup_unsend() {
     UNSEND_TARGET="$SEND_ROWID"
     [[ -n "$UNSEND_TARGET" ]] || return 1
     setup_warm || return 1
-    tell "Unsend asks for approval. Click Allow once in the iMessage Agent dialog."
+    tell "Unsend asks for approval. Click Allow once in the MsgBridge dialog."
 }
 act_unsend() {
     ui unsend "$UNSEND_TARGET"

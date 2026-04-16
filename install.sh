@@ -1,5 +1,5 @@
 #!/bin/bash
-# Installs or removes imessage-agent for the current user (DESIGN.md "Install flow for Grok Bot",
+# Installs or removes msgbridge for the current user (DESIGN.md "Install flow for Grok Bot",
 # docs/BUILD-PLAN.md install.sh).
 #
 # Usage:
@@ -15,18 +15,18 @@
 # pin its own hash. The copy inside the tarball is kept in the app-support folder and is there for --uninstall.
 #
 # Test hooks, for a dry run under a fake HOME:
-#   IMESSAGE_AGENT_TARBALL=PATH  read the tarball from PATH instead of downloading it. The pin still applies.
-#   IMESSAGE_AGENT_NO_SYSTEM=1   print the launchctl, lsregister and Keychain commands instead of running them.
+#   MSGBRIDGE_TARBALL=PATH  read the tarball from PATH instead of downloading it. The pin still applies.
+#   MSGBRIDGE_NO_SYSTEM=1   print the launchctl, lsregister and Keychain commands instead of running them.
 set -euo pipefail
 
 PINNED_VERSION=""
 PINNED_TARBALL_SHA256=""
 
-REPO_URL="https://github.com/krishhgg/imessage-agent"
-LABEL="io.github.krishhgg.imessage-agent"
-BUNDLE_ID="io.github.krishhgg.imessage-agent"
-APP_NAME="iMessage Agent"
-KEYCHAIN_SERVICE="io.github.krishhgg.imessage-agent.policy"
+REPO_URL="https://github.com/KING-MOI/msgbridge"
+LABEL="com.adityaverma.msgbridge"
+BUNDLE_ID="com.adityaverma.msgbridge"
+APP_NAME="MsgBridge"
+KEYCHAIN_SERVICE="com.adityaverma.msgbridge.policy"
 KEYCHAIN_ACCOUNT="allowlist-hash"
 LSREGISTER="/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister"
 MAX_SOCKET_PATH_BYTES=104
@@ -46,7 +46,7 @@ MANIFEST="$APP_SUPPORT/install-manifest.txt"
 INSTALLED_SCRIPT="$APP_SUPPORT/install.sh"
 CACHE_DIR="$HOME/Library/Caches/$BUNDLE_ID"
 STAGING_DIR="$HOME/Pictures/$APP_NAME"
-FALLBACK_SOCKET_DIR="$HOME/.imessage-agent"
+FALLBACK_SOCKET_DIR="$HOME/.msgbridge"
 SERVICE_TARGET="gui/$(id -u)/$LABEL"
 
 # Runs a command that changes launchd, Launch Services or the Keychain, or only prints it in a dry run.
@@ -54,7 +54,7 @@ SERVICE_TARGET="gui/$(id -u)/$LABEL"
 system() {
     local quiet=0
     if [[ "${1:-}" == -q ]]; then quiet=1; shift; fi
-    if [[ "${IMESSAGE_AGENT_NO_SYSTEM:-}" == 1 ]]; then
+    if [[ "${MSGBRIDGE_NO_SYSTEM:-}" == 1 ]]; then
         say "dry run, skipped: $*"
         return 0
     fi
@@ -150,7 +150,7 @@ do_uninstall() {
     # refused Keychain prompt, is reported, because a hash left behind makes a reinstall distrust its allowlist.
     local keychain_left=0 rc
     if system -q security delete-generic-password -s "$KEYCHAIN_SERVICE" -a "$KEYCHAIN_ACCOUNT"; then
-        [[ "${IMESSAGE_AGENT_NO_SYSTEM:-}" == 1 ]] || say "removed Keychain item $KEYCHAIN_SERVICE"
+        [[ "${MSGBRIDGE_NO_SYSTEM:-}" == 1 ]] || say "removed Keychain item $KEYCHAIN_SERVICE"
     else
         rc=$?
         if (( rc != 44 )); then
@@ -163,9 +163,9 @@ do_uninstall() {
     done
     say ""
     if (( keychain_left )); then
-        say "iMessage Agent is removed except its Keychain item. Run the fix command above and allow it if macOS asks. To clear its permissions too, run:"
+        say "MsgBridge is removed except its Keychain item. Run the fix command above and allow it if macOS asks. To clear its permissions too, run:"
     else
-        say "iMessage Agent is removed. To clear its permissions too, run:"
+        say "MsgBridge is removed. To clear its permissions too, run:"
     fi
     say "  tccutil reset SystemPolicyAllFiles $BUNDLE_ID"
     say "  tccutil reset AppleEvents $BUNDLE_ID"
@@ -210,13 +210,13 @@ do_install() {
         die "this install.sh has no pinned release fix: download install.sh from $REPO_URL/releases and check it against INSTALL.md"
     fi
 
-    WORK="$(mktemp -d "${TMPDIR:-/tmp}/imessage-agent.XXXXXX")"
+    WORK="$(mktemp -d "${TMPDIR:-/tmp}/msgbridge.XXXXXX")"
     trap 'rm -rf "$WORK"' EXIT
     local work="$WORK"
-    local name="imessage-agent-$PINNED_VERSION"
+    local name="msgbridge-$PINNED_VERSION"
     local tarball="$work/$name.tar.gz"
-    if [[ -n "${IMESSAGE_AGENT_TARBALL:-}" ]]; then
-        cp "$IMESSAGE_AGENT_TARBALL" "$tarball"
+    if [[ -n "${MSGBRIDGE_TARBALL:-}" ]]; then
+        cp "$MSGBRIDGE_TARBALL" "$tarball"
     else
         /usr/bin/curl -fsSL --proto '=https' --tlsv1.2 -o "$tarball" \
             "$REPO_URL/releases/download/v$PINNED_VERSION/$name.tar.gz" \
@@ -231,7 +231,7 @@ do_install() {
     tar -xzf "$tarball" -C "$work"
     local src="$work/$name"
     local f
-    for f in "$APP_NAME.app/Contents/MacOS/IMessageAgent" imessage "$LABEL.plist" skill/imessage/SKILL.md install.sh; do
+    for f in "$APP_NAME.app/Contents/MacOS/MsgBridge" imessage "$LABEL.plist" skill/imessage/SKILL.md install.sh; do
         [[ -e "$src/$f" ]] || die "the tarball has no $f. Nothing was installed"
     done
 
@@ -282,7 +282,7 @@ do_install() {
 
     local plist_tmp="$work/$LABEL.plist"
     cp "$src/$LABEL.plist" "$plist_tmp"
-    plutil -replace Program -string "$APP/Contents/MacOS/IMessageAgent" "$plist_tmp"
+    plutil -replace Program -string "$APP/Contents/MacOS/MsgBridge" "$plist_tmp"
     plutil -replace Sockets.Listener.SockPathName -string "$sock" "$plist_tmp"
     plutil -replace StandardErrorPath -string "$APP_SUPPORT/bridge.log" "$plist_tmp"
     plutil -lint "$plist_tmp" >/dev/null
@@ -312,7 +312,7 @@ do_install() {
     done
 
     say ""
-    say "iMessage Agent $PINNED_VERSION is installed. Next: $CLI setup"
+    say "MsgBridge $PINNED_VERSION is installed. Next: $CLI setup"
 }
 
 UNINSTALL=0

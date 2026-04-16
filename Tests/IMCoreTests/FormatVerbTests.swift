@@ -223,7 +223,7 @@ final class FormatVerbTests: XCTestCase {
     func testAttachmentExport() {
         let heic = AttachmentRecord(rowid: 9904, guid: "g", kind: .photo, transferName: "IMG_4420.HEIC",
                                     totalBytes: 1_900_000, width: 4032, height: 3024)
-        let path = "/Users/x/Library/Caches/io.github.krishhgg.imessage-agent/attachments/9904.jpg"
+        let path = "/Users/x/Library/Caches/com.adityaverma.msgbridge/attachments/9904.jpg"
         XCTAssertEqual(Format.attachment(AttachmentExport(attachment: heic, path: path, converted: true, result: nil)),
                        "a9904 photo IMG_4420.HEIC 1.9MB 4032x3024 -> \(path) (1600px)\n")
         let pdf = AttachmentRecord(rowid: 9902, guid: "g", kind: .file, transferName: "menu.pdf", totalBytes: 348_000)

@@ -9,9 +9,9 @@
 RT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT="$(cd "$RT_DIR/../.." && pwd)"
 IMSG="${IMSG_CLI:-$HOME/.local/bin/imessage}"
-APP="$HOME/Applications/iMessage Agent.app"
-BRIDGE_LOG="$HOME/Library/Application Support/iMessage Agent/bridge.log"
-STAGING_DIR="$HOME/Pictures/iMessage Agent"
+APP="$HOME/Applications/MsgBridge.app"
+BRIDGE_LOG="$HOME/Library/Application Support/MsgBridge/bridge.log"
+STAGING_DIR="$HOME/Pictures/MsgBridge"
 MESSAGES_BUNDLE=com.apple.MobileSMS
 SEND_SPACING=21
 EDIT_WINDOW=900
@@ -180,7 +180,7 @@ result_line() {
     echo "$out"
 }
 
-test_text() { echo "imessage-agent release test $* $(date +%Y%m%d-%H%M%S)"; }
+test_text() { echo "msgbridge release test $* $(date +%Y%m%d-%H%M%S)"; }
 
 wait_for_send_spacing() {
     local last now
@@ -195,7 +195,7 @@ send() {
     local who="$1"
     shift
     wait_for_send_spacing
-    tell "If an iMessage Agent dialog appears for this send, click Allow once."
+    tell "If an MsgBridge dialog appears for this send, click Allow once."
     im send "$who" "$@" --json
     date +%s >"$RESULTS/.last-send"
     SEND_ROWID=""
@@ -430,7 +430,7 @@ front_bundle() { lsappinfo info -only bundleid "$(lsappinfo front)" 2>/dev/null 
 messages_running() { pgrep -x Messages >/dev/null; }
 
 front_other_app() {
-    ask "If a Messages window shows, hide Messages with Command-H. Then click a Finder window so Finder is in front. After you press Return, touch nothing except an iMessage Agent dialog until this case finishes." || return 1
+    ask "If a Messages window shows, hide Messages with Command-H. Then click a Finder window so Finder is in front. After you press Return, touch nothing except an MsgBridge dialog until this case finishes." || return 1
     if [[ "$(front_bundle)" == "$MESSAGES_BUNDLE" ]]; then
         tell "Messages is still in front."
         return 1
@@ -599,7 +599,7 @@ foreground_mode_on() {
 }
 require_foreground_mode() {
     foreground_mode_on && return 0
-    tell "Foreground mode is off. The next command asks for it in an iMessage Agent dialog. Click Allow once."
+    tell "Foreground mode is off. The next command asks for it in an MsgBridge dialog. Click Allow once."
     im allow --foreground
     foreground_mode_on || die "foreground mode is still off"
 }

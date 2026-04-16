@@ -4,7 +4,7 @@
 # Usage: scripts/tests/install-test.sh [--built]
 #
 # The tests build a small fake release tarball, pin it in a copy of install.sh the way scripts/build.sh does, and run
-# install, upgrade and uninstall with IMESSAGE_AGENT_NO_SYSTEM=1, so launchctl, lsregister and the Keychain are never
+# install, upgrade and uninstall with MSGBRIDGE_NO_SYSTEM=1, so launchctl, lsregister and the Keychain are never
 # touched. launchctl and security on PATH are stubs that record any call, and a recorded call fails the run.
 # --built also installs the real out/ tarball through out/install.sh and checks the installed app's signature.
 #
@@ -33,8 +33,8 @@ check() {
     if "$@"; then pass "$name"; else fail "$name"; fi
 }
 
-LABEL=io.github.krishhgg.imessage-agent
-APP_NAME="iMessage Agent"
+LABEL=com.adityaverma.msgbridge
+APP_NAME="MsgBridge"
 
 # Stubs that stand in for the system tools a dry run must never reach.
 STUBS="$T/stubs"
@@ -46,11 +46,11 @@ done
 
 # A fake release: same layout as the tarball scripts/build.sh writes, with shell scripts for the two binaries.
 VERSION=9.9.9
-PKG="imessage-agent-$VERSION"
+PKG="msgbridge-$VERSION"
 mkdir -p "$T/stage/$PKG/$APP_NAME.app/Contents/MacOS" "$T/stage/$PKG/skill"
-printf '#!/bin/sh\nexit 0\n' >"$T/stage/$PKG/$APP_NAME.app/Contents/MacOS/IMessageAgent"
+printf '#!/bin/sh\nexit 0\n' >"$T/stage/$PKG/$APP_NAME.app/Contents/MacOS/MsgBridge"
 printf '#!/bin/sh\necho fake imessage\n' >"$T/stage/$PKG/imessage"
-chmod 755 "$T/stage/$PKG/$APP_NAME.app/Contents/MacOS/IMessageAgent" "$T/stage/$PKG/imessage"
+chmod 755 "$T/stage/$PKG/$APP_NAME.app/Contents/MacOS/MsgBridge" "$T/stage/$PKG/imessage"
 cp "$ROOT/packaging/$LABEL.plist" "$T/stage/$PKG/"
 cp -R "$ROOT/skill/imessage" "$T/stage/$PKG/skill/imessage"
 cp "$ROOT/install.sh" "$T/stage/$PKG/install.sh"
@@ -71,7 +71,7 @@ run() {
     local home="$1" cwd="$2" tarball="$3"
     shift 3
     (cd "$cwd" && env HOME="$home" PATH="$STUBS:/usr/bin:/bin:/usr/sbin:/sbin" TMPDIR="$T" \
-        IMESSAGE_AGENT_NO_SYSTEM=1 IMESSAGE_AGENT_TARBALL="$tarball" /bin/bash "$@") >"$OUT_FILE" 2>"$ERR_FILE"
+        MSGBRIDGE_NO_SYSTEM=1 MSGBRIDGE_TARBALL="$tarball" /bin/bash "$@") >"$OUT_FILE" 2>"$ERR_FILE"
     RC=$?
 }
 new_home() {
@@ -81,7 +81,7 @@ new_home() {
 }
 untouched() {
     local h="$1"
-    [[ ! -e "$h/Applications" && ! -e "$h/.local" && ! -e "$h/Library" && ! -e "$h/.imessage-agent" ]]
+    [[ ! -e "$h/Applications" && ! -e "$h/.local" && ! -e "$h/Library" && ! -e "$h/.msgbridge" ]]
 }
 err_has() { grep -q -F -- "$1" "$ERR_FILE"; }
 out_has() { grep -q -F -- "$1" "$OUT_FILE"; }
@@ -150,7 +150,7 @@ mkdir -p "$H/work"
 run "$H" "$H/work" "$TARBALL" "$PINNED" --skill-dir '~/.agents/skills' --skill-dir=rel-skills
 check "install exits 0" test "$RC" = 0
 [[ "$RC" == 0 ]] || sed 's/^/      /' "$ERR_FILE"
-for f in "$APP/Contents/MacOS/IMessageAgent" "$CLI" "$PLIST" "$AS/install.sh" "$MANIFEST" \
+for f in "$APP/Contents/MacOS/MsgBridge" "$CLI" "$PLIST" "$AS/install.sh" "$MANIFEST" \
     "$H/.agents/skills/imessage/SKILL.md" "$H/.agents/skills/imessage/reference.md" "$H/work/rel-skills/imessage/SKILL.md"; do
     check "install wrote ${f#"$H"/}" test -f "$f"
 done
@@ -161,14 +161,14 @@ check "the LaunchAgent is 0644" mode_is "$PLIST" 644
 check "the installed skill matches the repo" same_file "$H/.agents/skills/imessage/SKILL.md" "$ROOT/skill/imessage/SKILL.md"
 check "the kept install.sh is the unpinned repo copy" same_file "$AS/install.sh" "$ROOT/install.sh"
 check "plist Label" plist_is "$PLIST" Label "$LABEL"
-check "plist Program is the installed binary" plist_is "$PLIST" Program "$APP/Contents/MacOS/IMessageAgent"
+check "plist Program is the installed binary" plist_is "$PLIST" Program "$APP/Contents/MacOS/MsgBridge"
 check "plist socket is the primary path" plist_is "$PLIST" Sockets.Listener.SockPathName "$AS/bridge.sock"
 check "plist socket mode is 0600 (384)" plist_is "$PLIST" Sockets.Listener.SockPathMode 384
 check "plist log goes to the app-support folder" plist_is "$PLIST" StandardErrorPath "$AS/bridge.log"
 check "plist keeps the Aqua session limit" plist_is "$PLIST" LimitLoadToSessionType Aqua
 check "plist has no ~/ path left" bash -c '! plutil -convert xml1 -o - "$1" | grep -q "<string>~/"' _ "$PLIST"
 check "plist has no EnvironmentVariables" bash -c '! plutil -extract EnvironmentVariables raw -o - "$1" >/dev/null 2>&1' _ "$PLIST"
-check "a short HOME gets no fallback socket folder" test ! -e "$H/.imessage-agent"
+check "a short HOME gets no fallback socket folder" test ! -e "$H/.msgbridge"
 check "the dry run printed the bootout" out_has "dry run, skipped: launchctl bootout gui/"
 check "the dry run printed the lsregister call" out_has "lsregister -f $APP"
 check "the dry run printed the bootstrap" out_has "dry run, skipped: launchctl bootstrap gui/"
@@ -232,7 +232,7 @@ if [[ "$(env PATH="$KC_PATH" /bin/bash -c 'command -v security; command -v launc
     check "a refused Keychain delete fails the uninstall" test "$RC" = 1
     check "a refused Keychain delete prints an error with the exit code and the fix" \
         err_has "error: couldn't delete Keychain item $LABEL.policy (security exit 1) fix: security delete-generic-password -s $LABEL.policy -a allowlist-hash"
-    check "a refused Keychain delete isn't reported as a clean removal" not_out_has "iMessage Agent is removed. "
+    check "a refused Keychain delete isn't reported as a clean removal" not_out_has "MsgBridge is removed. "
     check "a refused Keychain delete says the item is left" out_has "removed except its Keychain item"
     check "the rest is still removed after a refused Keychain delete" test ! -e "$H/Library/Application Support/$APP_NAME"
     check "the stubbed security got the delete" \
@@ -241,7 +241,7 @@ if [[ "$(env PATH="$KC_PATH" /bin/bash -c 'command -v security; command -v launc
     run_keychain "$H" 44 "$PINNED" --uninstall
     check "an uninstall with no Keychain item exits 0" test "$RC" = 0
     check "a missing Keychain item prints no error" test ! -s "$ERR_FILE"
-    check "a missing Keychain item still reports a clean removal" out_has "iMessage Agent is removed. "
+    check "a missing Keychain item still reports a clean removal" out_has "MsgBridge is removed. "
     H="$(new_home kc-deleted)"
     run_keychain "$H" 0 "$PINNED" --uninstall
     check "an uninstall that deletes the Keychain item exits 0" test "$RC" = 0
@@ -331,19 +331,19 @@ mkdir -p "$L"
 run "$L" "$L" "$TARBALL" "$PINNED"
 check "a long-HOME install exits 0" test "$RC" = 0
 check "a long HOME gets the fallback socket path" \
-    plist_is "$L/Library/LaunchAgents/$LABEL.plist" Sockets.Listener.SockPathName "$L/.imessage-agent/bridge.sock"
-check "the fallback socket folder is 0700" mode_is "$L/.imessage-agent" 700
+    plist_is "$L/Library/LaunchAgents/$LABEL.plist" Sockets.Listener.SockPathName "$L/.msgbridge/bridge.sock"
+check "the fallback socket folder is 0700" mode_is "$L/.msgbridge" 700
 check "the manifest lists the fallback folder" \
-    grep -q -x -F "$L/.imessage-agent" "$L/Library/Application Support/$APP_NAME/install-manifest.txt"
+    grep -q -x -F "$L/.msgbridge" "$L/Library/Application Support/$APP_NAME/install-manifest.txt"
 run "$L" "$L" "$TARBALL" "$L/Library/Application Support/$APP_NAME/install.sh" --uninstall
 check "the long-HOME uninstall exits 0" test "$RC" = 0
-check "the long-HOME uninstall removed the fallback folder" test ! -e "$L/.imessage-agent"
+check "the long-HOME uninstall removed the fallback folder" test ! -e "$L/.msgbridge"
 
 # The real build, when asked.
 if (( BUILT )); then
     OUT_DIR="$ROOT/out"
     BUILT_VERSION="$(sed -n 's/^PINNED_VERSION="\(.*\)"$/\1/p' "$OUT_DIR/install.sh" 2>/dev/null)"
-    BUILT_TARBALL="$OUT_DIR/imessage-agent-$BUILT_VERSION.tar.gz"
+    BUILT_TARBALL="$OUT_DIR/msgbridge-$BUILT_VERSION.tar.gz"
     if [[ -z "$BUILT_VERSION" || ! -f "$BUILT_TARBALL" ]]; then
         fail "--built needs out/install.sh and its tarball from scripts/build.sh"
     else
@@ -357,7 +357,7 @@ if (( BUILT )); then
         check "the installed CLI is universal" bash -c '[[ "$(lipo -archs "$1")" == *arm64* && "$(lipo -archs "$1")" == *x86_64* ]]' _ "$H/.local/bin/imessage"
         run "$H" "$H" "$BUILT_TARBALL" "$H/Library/Application Support/$APP_NAME/install.sh" --uninstall
         check "the built release uninstalls" test "$RC" = 0
-        check "nothing of the built release is left" bash -c '[[ ! -e "$1/Applications/iMessage Agent.app" && ! -e "$1/.local/bin/imessage" && ! -e "$1/Library/LaunchAgents/io.github.krishhgg.imessage-agent.plist" && ! -e "$1/Library/Application Support/iMessage Agent" && ! -e "$1/.agents/skills/imessage" ]]' _ "$H"
+        check "nothing of the built release is left" bash -c '[[ ! -e "$1/Applications/MsgBridge.app" && ! -e "$1/.local/bin/imessage" && ! -e "$1/Library/LaunchAgents/com.adityaverma.msgbridge.plist" && ! -e "$1/Library/Application Support/MsgBridge" && ! -e "$1/.agents/skills/imessage" ]]' _ "$H"
     fi
 fi
 

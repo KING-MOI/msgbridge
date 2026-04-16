@@ -92,7 +92,7 @@ same_minute() {
         day=""
     fi
     if [[ -z "$day" || "$day" == "$today" ]]; then
-        text="imessage-agent release test t3 same minute $(date +%Y%m%d%H%M%S)"
+        text="msgbridge release test t3 same minute $(date +%Y%m%d%H%M%S)"
         send "$SELF" "$text"
         if send_ok && [[ -n "$SEND_ROWID" ]] && hm="$(row_minute "$SEND_ROWID")"; then
             echo "$today $hm $text" >"$state"
@@ -129,7 +129,7 @@ same_minute() {
 # b. Same text at different minutes: the Heart lands on the right GUID.
 different_minutes() {
     local text first second
-    text="imessage-agent release test t3 same text $(date +%Y%m%d%H%M%S)"
+    text="msgbridge release test t3 same text $(date +%Y%m%d%H%M%S)"
     send "$SELF" "$text"
     first="$SEND_ROWID"
     sleep $((61 - $(date +%S | sed 's/^0//')))
@@ -202,7 +202,7 @@ newest_row_kinds() {
     fi
     clear_reaction "$s1" heart
 
-    echo "imessage-agent release test t3 attachment" >"$file"
+    echo "msgbridge release test t3 attachment" >"$file"
     send "$SELF" "$(test_text t3 attachment case)"
     s0="$SEND_ROWID"
     send "$SELF" --file "$file"

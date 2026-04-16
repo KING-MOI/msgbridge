@@ -118,7 +118,7 @@ final class ServicesTests: XCTestCase {
         let names = try XCTUnwrap(missing.checks.first { $0.name == "action names" })
         XCTAssertFalse(names.ok)
         XCTAssertEqual(names.detail, "missing: Heart")
-        XCTAssertEqual(names.fix, "set the macOS language to English, or update iMessage Agent")
+        XCTAssertEqual(names.fix, "set the macOS language to English, or update MsgBridge")
 
         h.permissions.accessibilityState = .denied
         guard case .doctor(let untrusted) = h.call(.doctor(DoctorArgs(wantUIActions: true))) else { return XCTFail("d") }

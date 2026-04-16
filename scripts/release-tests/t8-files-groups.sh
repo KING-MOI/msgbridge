@@ -5,7 +5,7 @@
 #
 # Cases:
 #   image send       IMSG_TEST_HEIC=<path to a HEIC photo of at least 2 MB>, sent to your own chat. A staged copy
-#                    must show up in ~/Pictures/iMessage Agent during the send, the row must reach transfer_state 5
+#                    must show up in ~/Pictures/MsgBridge during the send, the row must reach transfer_state 5
 #                    and get a delivery date, and the bridge must then delete the staged copy.
 #   att conversion   IMSG_TEST_PEER and IMSG_TEST_CONSENT=1. The person sends you a HEIC photo. `imessage att` must
 #                    return a JPEG no larger than 1600 px on its long side, which you then open in Preview.
@@ -19,7 +19,7 @@ rt_init 8
 
 SELF="$IMSG_TEST_HANDLE"
 NOTE_FILE="$RESULTS/files/t8-group-note.txt"
-echo "imessage-agent release test group file $(date +%Y%m%d-%H%M%S)" >"$NOTE_FILE"
+echo "msgbridge release test group file $(date +%Y%m%d-%H%M%S)" >"$NOTE_FILE"
 
 setup_hidden() { front_other_app; }
 

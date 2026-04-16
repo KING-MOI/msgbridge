@@ -71,7 +71,7 @@ need_tool sampler
 ((EVIDENCE)) && need_tool write-evidence
 
 # Preflight: grants and your own chat allowed with files, so most sends don't ask.
-tell "imessage doctor --ui checks the grants. Allow any prompt it raises for iMessage Agent."
+tell "imessage doctor --ui checks the grants. Allow any prompt it raises for MsgBridge."
 require_grants
 tell "Next, imessage allow asks to allow your own chat with files. Click Allow once."
 im allow "$IMSG_TEST_HANDLE" --files

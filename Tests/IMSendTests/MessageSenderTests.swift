@@ -212,7 +212,7 @@ final class MessageSenderTests: XCTestCase {
 
     func testMessagesTmpStagingFolderIsNeverUsed() throws {
         messagesWritesRows()
-        let forbidden = URL(fileURLWithPath: "/private/var/tmp/com.apple.messages/iMessage Agent", isDirectory: true)
+        let forbidden = URL(fileURLWithPath: "/private/var/tmp/com.apple.messages/MsgBridge", isDirectory: true)
         let result = send(nil, file: try frozen(), staging: forbidden)
 
         XCTAssertEqual(codes(result), [MessageSender.stagingFailed])
@@ -423,7 +423,7 @@ final class MessageSenderTests: XCTestCase {
             MessageSender.badRequest: "error: bad request fix: send text or --file to a phone number or email",
             MessageSender.journalWriteFailed: "error: journal write failed fix: free disk space and retry",
             MessageSender.chatDBUnreadable: "error: can't read chat.db fix: run imessage doctor",
-            MessageSender.stagingFailed: "error: file staging failed fix: check that ~/Pictures/iMessage Agent is writable",
+            MessageSender.stagingFailed: "error: file staging failed fix: check that ~/Pictures/MsgBridge is writable",
             MessageSender.groupUnsupported: "unsupported fix: send to each person on their own",
             MessageSender.automationNotAllowed: "error: Messages automation not allowed fix: run imessage doctor",
         ]

@@ -493,6 +493,6 @@ enum WireErrors {
 /// Lines for the bridge's stderr, which launchd sends to the system log.
 enum BridgeLog {
     static func write(_ line: String) {
-        FileHandle.standardError.write(Data(("imessage-agent: " + TextNorm.oneLine(line) + "\n").utf8))
+        FileHandle.standardError.write(Data(("msgbridge: " + TextNorm.oneLine(line) + "\n").utf8))
     }
 }

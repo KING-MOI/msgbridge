@@ -305,10 +305,10 @@ grants() {
 printf '%s\n' 'doctor · 5 checks, 0 failing' 'ok chat.db: 120 messages' 'ok Automation: granted' 'ok Accessibility: granted' \
     'ok Automation prompt: granted' 'ok Accessibility prompt: granted' >"$T/doctor-ok.txt"
 printf '%s\n' 'doctor · 5 checks, 1 failing' 'ok chat.db: 120 messages' 'ok Automation: granted' \
-    'fail Accessibility: denied fix: turn on iMessage Agent in Privacy & Security > Accessibility' \
+    'fail Accessibility: denied fix: turn on MsgBridge in Privacy & Security > Accessibility' \
     'ok Automation prompt: granted' 'ok Accessibility prompt: asked, answer the prompt on the Mac' >"$T/doctor-ax.txt"
 printf '%s\n' 'doctor · 4 checks, 1 failing' 'ok chat.db: 120 messages' 'ok Automation: granted' \
-    'fail Automation prompt: denied fix: turn on iMessage Agent in System Settings > Privacy & Security > Automation' >"$T/doctor-prompt.txt"
+    'fail Automation prompt: denied fix: turn on MsgBridge in System Settings > Privacy & Security > Automation' >"$T/doctor-prompt.txt"
 printf '%s\n' 'doctor · 4 checks, 2 failing' 'ok chat.db: 120 messages' 'ok Automation: granted' 'ok Accessibility: granted' \
     'fail action names: missing: Heart fix: imessage doctor' 'fail last run: crashed fix: imessage doctor' 'ok allowlist: 1 chats' >"$T/doctor-other.txt"
 grants "$T/doctor-ok.txt"
@@ -374,7 +374,7 @@ cat >"$T/front.jsonl" <<'EOF'
 {"front":"com.apple.finder","messages_hidden":true,"type":"start","wall_ms":500}
 {"bundle":"com.apple.MobileSMS","pid":5,"type":"front","wall_ms":600}
 {"bundle":"com.apple.finder","pid":6,"type":"front","wall_ms":700}
-{"bundle":"io.github.krishhgg.imessage-agent","pid":8,"type":"front","wall_ms":800}
+{"bundle":"com.adityaverma.msgbridge","pid":8,"type":"front","wall_ms":800}
 {"bundle":"com.apple.MobileSMS","pid":5,"type":"front","wall_ms":1000}
 {"hidden":true,"pids":[5],"type":"messages_app","wall_ms":4700}
 {"bundle":"com.apple.finder","pid":6,"type":"front","wall_ms":4800}

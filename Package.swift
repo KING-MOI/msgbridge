@@ -2,15 +2,15 @@
 import PackageDescription
 
 // Module graph (DESIGN.md v5.4, docs/BUILD-PLAN.md):
-//   IMCore <- IMStore <- IMPolicy, IMSend, IMUI <- IMForeground <- IMBridge <- IMessageAgent
+//   IMCore <- IMStore <- IMPolicy, IMSend, IMUI <- IMForeground <- IMBridge <- MsgBridge
 //   imessage (CLI) depends on IMCore only.
 // IMTestSupport holds fakes for IMCore protocols and fixture paths. Only test targets use it.
 let package = Package(
-    name: "imessage-agent",
+    name: "msgbridge",
     platforms: [.macOS(.v14)],
     products: [
         .executable(name: "imessage", targets: ["imessage"]),
-        .executable(name: "IMessageAgent", targets: ["IMessageAgent"]),
+        .executable(name: "MsgBridge", targets: ["MsgBridge"]),
     ],
     targets: [
         .target(name: "IMCore"),
@@ -27,7 +27,7 @@ let package = Package(
             name: "IMBridge",
             dependencies: ["IMCore", "IMStore", "IMPolicy", "IMSend", "IMUI", "IMForeground"]
         ),
-        .executableTarget(name: "IMessageAgent", dependencies: ["IMBridge"]),
+        .executableTarget(name: "MsgBridge", dependencies: ["IMBridge"]),
         .executableTarget(name: "imessage", dependencies: ["IMCore"]),
 
         .target(name: "IMTestSupport", dependencies: ["IMCore"], path: "Tests/IMTestSupport"),

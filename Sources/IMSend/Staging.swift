@@ -147,7 +147,7 @@ public final class UploadFreezer {
 
 /// A frozen file copied into Messages' sandbox for one send.
 public struct StagedFile: Hashable, Sendable {
-    /// `~/Pictures/iMessage Agent/<unique name>`.
+    /// `~/Pictures/MsgBridge/<unique name>`.
     public var url: URL
     /// The unique name the attachment row's `transfer_name` will carry (correlation key for file parts).
     public var transferName: String
@@ -168,7 +168,7 @@ public enum StagingError: Error, Hashable, Sendable {
     case io(String)
 }
 
-/// Staging under `~/Pictures/iMessage Agent/` (section 3 item 7). Owner: IMSend.
+/// Staging under `~/Pictures/MsgBridge/` (section 3 item 7). Owner: IMSend.
 ///
 /// - `stage` copies a frozen file under a unique name that keeps the original extension.
 /// - `sweep` deletes a staged copy once its transfer_state reaches 5, or 10 minutes after staging, including copies

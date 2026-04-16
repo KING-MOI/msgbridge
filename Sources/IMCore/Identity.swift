@@ -2,14 +2,14 @@ import Foundation
 
 /// Fixed names and identifiers. DESIGN.md "Names" and section 1.
 public enum AppIdentity {
-    /// Display name of the bridge app bundle, `~/Applications/iMessage Agent.app`.
-    public static let appName = "iMessage Agent"
+    /// Display name of the bridge app bundle, `~/Applications/MsgBridge.app`.
+    public static let appName = "MsgBridge"
     /// Bundle identifier of the bridge. The designated requirement is this id plus the certificate root (section 1).
-    public static let bundleID = "io.github.krishhgg.imessage-agent"
+    public static let bundleID = "com.adityaverma.msgbridge"
     /// LaunchAgent label. The plist lives at `~/Library/LaunchAgents/<label>.plist` (section 1).
-    public static let launchAgentLabel = "io.github.krishhgg.imessage-agent"
+    public static let launchAgentLabel = "com.adityaverma.msgbridge"
     /// Code-signing identifier of the CLI binary (section 5, signed with the same certificate).
-    public static let cliSigningID = "io.github.krishhgg.imessage-agent.cli"
+    public static let cliSigningID = "com.adityaverma.msgbridge.cli"
     /// CLI command name, installed at `~/.local/bin/imessage` (section 5).
     public static let cliName = "imessage"
     /// Skill folder name (section 6).
@@ -19,7 +19,7 @@ public enum AppIdentity {
     /// Name of the `Sockets` entry in the LaunchAgent plist, passed to `launch_activate_socket` (section 1).
     public static let launchdSocketName = "Listener"
     /// Keychain service of the allowlist hash item (section 2, Storage).
-    public static let keychainService = "io.github.krishhgg.imessage-agent.policy"
+    public static let keychainService = "com.adityaverma.msgbridge.policy"
     /// Keychain account of the allowlist hash item.
     public static let keychainAccount = "allowlist-hash"
     /// Release version. The packaging script stamps CFBundleShortVersionString from this value.

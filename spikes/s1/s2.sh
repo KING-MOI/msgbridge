@@ -1,7 +1,7 @@
 #!/bin/bash
 # S2: self-chat sends through the spike bridge. Sends only to SELF (the user's Apple ID).
 # Usage: s2.sh <self-handle> [file-kinds...]   default kinds: tmp pictures
-SOCK="$HOME/Library/Application Support/iMessageAgentSpike/bridge.sock"
+SOCK="$HOME/Library/Application Support/MsgBridgeSpike/bridge.sock"
 SELF="$1"; shift
 KINDS="${*:-tmp pictures}"
 op() { printf '%s\n' "$1" | nc -U "$SOCK"; }

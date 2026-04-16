@@ -163,9 +163,9 @@ final class FlowTests: XCTestCase {
                                          pause: { _ in })
         XCTAssertEqual(payload, P.doctor([
             DoctorCheck(name: "Automation prompt", ok: false, detail: "denied",
-                        fix: "turn on iMessage Agent in System Settings > Privacy & Security > Automation"),
+                        fix: "turn on MsgBridge in System Settings > Privacy & Security > Automation"),
             DoctorCheck(name: "Accessibility prompt", ok: false, detail: "denied",
-                        fix: "turn on iMessage Agent in System Settings > Privacy & Security > Accessibility"),
+                        fix: "turn on MsgBridge in System Settings > Privacy & Security > Accessibility"),
         ]))
     }
 

@@ -5,7 +5,7 @@ HERE="$(cd "$(dirname "$0")" && pwd)"
 SYS="/Library/Application Support/com.apple.TCC/TCC.db"
 USR="$HOME/Library/Application Support/com.apple.TCC/TCC.db"
 ts() { date +%H:%M:%S; }
-row() { sqlite3 -readonly "$1" "select auth_value from access where client='local.imessageagent.spike' and service='$2'" 2>/dev/null; }
+row() { sqlite3 -readonly "$1" "select auth_value from access where client='local.msgbridge.spike' and service='$2'" 2>/dev/null; }
 
 echo "$(ts) ae: $("$HERE/spike" ae)" &
 AE_PID=$!
@@ -22,7 +22,7 @@ for i in $(seq 1 300); do
       sleep 2
     done
     case "$s" in *message_rows*) ;; *)
-      echo "$(ts) kickstart -k"; launchctl kickstart -k "gui/$(id -u)/local.imessageagent.spike"; sleep 2
+      echo "$(ts) kickstart -k"; launchctl kickstart -k "gui/$(id -u)/local.msgbridge.spike"; sleep 2
       echo "$(ts) status (after restart): $("$HERE/spike" status 2>&1)";;
     esac
     echo "$(ts) whoami: $("$HERE/spike" whoami)"

@@ -35,7 +35,7 @@ choose_fullscreen_app() {
 
 # Puts the maintainer back on the full-screen app before each sampled case.
 on_fullscreen_app() {
-    ask "Go to the full-screen app's Space and click in its window. After you press Return, touch nothing except an iMessage Agent dialog until this case finishes." || return 1
+    ask "Go to the full-screen app's Space and click in its window. After you press Return, touch nothing except an MsgBridge dialog until this case finishes." || return 1
     if [[ "$(front_bundle)" != "$FS_BUNDLE" ]]; then
         tell "The front app is $(front_bundle), not $FS_BUNDLE."
         return 1

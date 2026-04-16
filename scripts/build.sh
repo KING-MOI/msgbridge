@@ -1,5 +1,5 @@
 #!/bin/bash
-# Builds, signs and packages imessage-agent (docs/BUILD-PLAN.md, Packaging; DESIGN.md section 1, Signing).
+# Builds, signs and packages msgbridge (docs/BUILD-PLAN.md, Packaging; DESIGN.md section 1, Signing).
 #
 # Usage: scripts/build.sh [--release-tests]
 #
@@ -13,11 +13,11 @@
 #   TOKEN_PYTHON           Python with tiktoken, passed to scripts/check-skill-tokens.sh.
 #
 # A normal build writes to out/:
-#   iMessage Agent.app, imessage, imessage-agent-<version>.tar.gz, install.sh and SHA256SUMS,
+#   MsgBridge.app, imessage, msgbridge-<version>.tar.gz, install.sh and SHA256SUMS,
 #   and pins the release tag and the install.sh SHA-256 in INSTALL.md.
 #
 # --release-tests compiles with -DIMESSAGE_RELEASE_TESTS (docs/BUILD-PLAN.md, item 10) and writes only
-# out/release-tests/iMessage Agent.app and out/release-tests/imessage. It signs them with the same identity and
+# out/release-tests/MsgBridge.app and out/release-tests/imessage. It signs them with the same identity and
 # identifiers so grants carry over. That build never goes into the tarball, SHA256SUMS or INSTALL.md.
 #
 # The pin cycle: the tarball holds install.sh, and install.sh pins the tarball's SHA-256, so one file can't hold
@@ -30,11 +30,11 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$ROOT"
 
-BUNDLE_ID="io.github.krishhgg.imessage-agent"
-CLI_ID="io.github.krishhgg.imessage-agent.cli"
-APP_NAME="iMessage Agent"
-EXECUTABLE="IMessageAgent"
-LABEL="io.github.krishhgg.imessage-agent"
+BUNDLE_ID="com.adityaverma.msgbridge"
+CLI_ID="com.adityaverma.msgbridge.cli"
+APP_NAME="MsgBridge"
+EXECUTABLE="MsgBridge"
+LABEL="com.adityaverma.msgbridge"
 
 RELEASE_TESTS=0
 for arg in "$@"; do
@@ -147,7 +147,7 @@ check_archs() {
 }
 
 step "building $EXECUTABLE and imessage $VERSION (release, arm64 and x86_64)${SWIFT_FLAGS[*]+ with ${SWIFT_FLAGS[*]}}"
-AGENT_BIN="$(build_universal IMessageAgent)"
+AGENT_BIN="$(build_universal MsgBridge)"
 CLI_BIN="$(build_universal imessage)"
 check_archs "$AGENT_BIN"
 check_archs "$CLI_BIN"
@@ -242,7 +242,7 @@ if [[ $RELEASE_TESTS -eq 1 ]]; then
     exit 0
 fi
 
-PKG_NAME="imessage-agent-$VERSION"
+PKG_NAME="msgbridge-$VERSION"
 TARBALL="$OUT/$PKG_NAME.tar.gz"
 STAGE="$OUT/pkg"
 

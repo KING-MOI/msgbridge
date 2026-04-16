@@ -80,14 +80,14 @@ final class BridgeClientTests: XCTestCase {
         }
     }
 
-    /// A home whose primary socket path is over 104 bytes uses `~/.imessage-agent/bridge.sock`, the same rule
+    /// A home whose primary socket path is over 104 bytes uses `~/.msgbridge/bridge.sock`, the same rule
     /// launchd uses.
     func testLongHomeUsesTheFallbackSocketPath() throws {
         let long = FakeBridge.makeHome().appendingPathComponent(String(repeating: "h", count: 40), isDirectory: true)
         let paths = Paths(home: long)
         XCTAssertGreaterThan(paths.primarySocketPath.utf8.count, Paths.maxSocketPathBytes)
         let bridge = try makeBridge(home: long) { _ in P.pong }
-        XCTAssertEqual(bridge.socketPath, long.appendingPathComponent(".imessage-agent/bridge.sock").path)
+        XCTAssertEqual(bridge.socketPath, long.appendingPathComponent(".msgbridge/bridge.sock").path)
         XCTAssertEqual(try bridge.client().socketPath(), bridge.socketPath)
         XCTAssertEqual(try runCaps(bridge.client()).payload, P.pong)
     }

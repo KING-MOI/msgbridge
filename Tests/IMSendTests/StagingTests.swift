@@ -41,9 +41,9 @@ final class StagingTests: XCTestCase {
 
     // MARK: Stage
 
-    func testLiveStagingFolderIsPicturesIMessageAgent() {
+    func testLiveStagingFolderIsPicturesMsgBridge() {
         let paths = Paths(home: root)
-        XCTAssertEqual(paths.stagingDir.path, root.appendingPathComponent("Pictures/iMessage Agent").path)
+        XCTAssertEqual(paths.stagingDir.path, root.appendingPathComponent("Pictures/MsgBridge").path)
     }
 
     func testStageCopiesUnderAUniqueNameThatIsTheTransferName() throws {
