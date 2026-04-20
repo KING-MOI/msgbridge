@@ -1,13 +1,13 @@
-# Build plan for imessage-agent
+# Build plan for msgbridge
 
 This plan splits DESIGN.md v5.4 into Swift modules that can be built in parallel. Doc comments on public types and functions cite the DESIGN.md section they implement.
 
-Names: repo `imessage-agent`, CLI `imessage`, bridge app "iMessage Agent", bundle id and LaunchAgent label `io.github.krishhgg.imessage-agent`. The constants live in `Sources/IMCore/Identity.swift`.
+Names: repo `msgbridge`, CLI `imessage`, bridge app "MsgBridge", bundle id and LaunchAgent label `com.adityaverma.msgbridge`. The constants live in `Sources/IMCore/Identity.swift`.
 
 ## Module graph
 
 ```
-IMCore <- IMStore <- IMPolicy, IMSend, IMUI <- IMForeground <- IMBridge <- IMessageAgent (app executable)
+IMCore <- IMStore <- IMPolicy, IMSend, IMUI <- IMForeground <- IMBridge <- MsgBridge (app executable)
 IMCore <- imessage (CLI executable)
 IMCore <- IMTestSupport (test-only fakes and fixture paths)
 ```
@@ -72,7 +72,7 @@ Owner files:
 DESIGN sections: 1 (named operations, socket path), 3 item 6 (result strings), 5 (verbs, output format), plus every number in sections 1 to 5.
 
 Rule checklist:
-- [ ] Socket path is 104 bytes or less with its terminating NUL. Fall back to `~/.imessage-agent/bridge.sock` when the app-support path is too long. The LaunchAgent plist and the CLI use the same resolved path.
+- [ ] Socket path is 104 bytes or less with its terminating NUL. Fall back to `~/.msgbridge/bridge.sock` when the app-support path is too long. The LaunchAgent plist and the CLI use the same resolved path.
 - [ ] Frames are a 4-byte big-endian length plus UTF-8 JSON, at most 8 MiB. Upload bytes follow the request frame raw, at most 100 MB.
 - [ ] `FrameChannel` handles short reads and writes, `EINTR`, and the `SO_RCVTIMEO`/`SO_SNDTIMEO` timeouts.
 - [ ] Every result string comes from `Results.swift`. `ActionResult.holdsIdempotencyKey` matches section 3 item 1 exactly: `submitted`, `delivered`, `failed <error>`, `ghost`, `ambiguous: two rows matched`, `may_have_completed`, `ok`, `failed: sent with wrong parent`, `denied`, and any result with the agent-text note. `denied: approval expired` doesn't hold it.
@@ -207,7 +207,7 @@ Rule checklist:
 - [ ] The AppleScript result is never trusted as a send result.
 - [ ] Cold start launches Messages with `open -g -j -b com.apple.MobileSMS` through `MessagesAppControl`. It waits up to 60 s for `account_ready`, else returns `failed: Messages not ready`. After a launch it polls visibility for 1 s and adds `error: Messages became visible` if a window showed.
 - [ ] Freeze the upload while it arrives. Refuse more than 100 MB or a byte count that disagrees with the header. Hash the bytes with SHA-256 and never open the caller's path.
-- [ ] Stage into `~/Pictures/iMessage Agent/` under a unique name that becomes the `transfer_name`. Never stage in `/private/var/tmp/com.apple.messages/`.
+- [ ] Stage into `~/Pictures/MsgBridge/` under a unique name that becomes the `transfer_name`. Never stage in `/private/var/tmp/com.apple.messages/`.
 - [ ] Delete a staged copy when its transfer_state reaches 5, or 10 minutes after staging, including copies from an earlier run.
 - [ ] Before sending, record the max ROWID, then call `recorder.willInvoke`. If that throws, send nothing.
 - [ ] Correlate only from_me rows above the snapshot, for the recipient's handle (for a group, whose rows have no handle, a join row naming one of the group's chats), dated at or after the request. Text rows match on the NFC, trimmed body (`PartExpectation.text`) or on its `TextNorm.textDigest` (`PartExpectation.textDigest`, for reconciliation and the foreground verifier); file rows match on `transfer_name`.
@@ -315,7 +315,7 @@ swift build --target IMForegroundTests --scratch-path .build-imforeground
 swift test --filter IMForegroundTests --scratch-path .build-imforeground
 ```
 
-## IMBridge and IMessageAgent
+## IMBridge and MsgBridge
 
 The bridge process: launchd socket, request dispatch, the mutation pipeline, the approval panel, setup, status and doctor, and the live wiring.
 
@@ -327,7 +327,7 @@ Owner files:
 - `Sources/IMBridge/ApprovalPanel.swift`
 - `Sources/IMBridge/Services.swift`
 - `Sources/IMBridge/Container.swift`
-- `Sources/IMessageAgent/main.swift`
+- `Sources/MsgBridge/main.swift`
 - `Tests/IMBridgeTests/`
 
 DESIGN sections: 1 (TCC contract, named ops, residency), 2 (dialog), 3 items 1 to 3 (order of journal, queue and approval), 5 (`setup`, `doctor`, `status`), the install flow steps 4 and 5.
@@ -361,7 +361,7 @@ Fakes its tests use: everything from IMTestSupport, the fixture `ChatDatabase`, 
 Commands:
 ```
 swift build --target IMBridge --scratch-path .build-imbridge
-swift build --target IMessageAgent --scratch-path .build-imbridge
+swift build --target MsgBridge --scratch-path .build-imbridge
 swift build --target IMBridgeTests --scratch-path .build-imbridge
 swift test --filter IMBridgeTests --scratch-path .build-imbridge
 ```
@@ -385,7 +385,7 @@ Rule checklist:
 - [ ] Reject a file over 100 MB before connecting. Stream the bytes; the bridge never gets the caller's path.
 - [ ] Refuse the socket unless its owner uid is ours.
 - [ ] Events go to stderr. Stdout holds only the rendered result or NDJSON.
-- [ ] `setup` sends the FDA stage and returns at once. `doctor [--ui]` runs `launchctl kickstart -k gui/<uid>/io.github.krishhgg.imessage-agent` once if the bridge says it needs it, then raises the Automation prompt, and Accessibility when `--ui` is given.
+- [ ] `setup` sends the FDA stage and returns at once. `doctor [--ui]` runs `launchctl kickstart -k gui/<uid>/com.adityaverma.msgbridge` once if the bridge says it needs it, then raises the Automation prompt, and Accessibility when `--ui` is given.
 - [ ] `DoctorFlow.run` takes the kickstart as a `kickstart: () -> Bool` parameter. `CLI.execute` passes `DoctorFlow.liveKickstart`; tests pass a recording closure, so no test restarts an installed bridge.
 - [ ] Exit codes are 0 for success, 1 for `error:` lines and failed actions, 2 for usage errors and 3 when the bridge is unreachable.
 
@@ -445,7 +445,7 @@ Owner files:
 - `scripts/build.sh`
 - `packaging/Info.plist`
 - `packaging/entitlements.plist`
-- `packaging/io.github.krishhgg.imessage-agent.plist` (LaunchAgent template)
+- `packaging/com.adityaverma.msgbridge.plist` (LaunchAgent template)
 - `install.sh`
 - `INSTALL.md`
 - `README.md`
@@ -454,34 +454,34 @@ Owner files:
 
 ### scripts/build.sh
 
-- Builds `IMessageAgent` and `imessage` in release mode for arm64 and x86_64 with `swift build -c release --arch arm64 --arch x86_64 --scratch-path .build-release`. If the toolchain can't do both arches in one call, it builds each arch into its own scratch path and joins them with `lipo -create`. It checks the result with `lipo -archs`.
-- Assembles `out/iMessage Agent.app/Contents/{MacOS/IMessageAgent,Info.plist,Resources/release-evidence.json}`. There are no embedded frameworks.
-- Info.plist sets `CFBundleIdentifier` to `io.github.krishhgg.imessage-agent`, `CFBundleName` and `CFBundleDisplayName` to "iMessage Agent", `CFBundleExecutable` to `IMessageAgent`, `CFBundleShortVersionString` from `AppIdentity.version`, `LSUIElement` true, `LSMultipleInstancesProhibited` true, `LSMinimumSystemVersion` 14.0, `NSAppleEventsUsageDescription` and `NSAccessibilityUsageDescription`.
+- Builds `MsgBridge` and `imessage` in release mode for arm64 and x86_64 with `swift build -c release --arch arm64 --arch x86_64 --scratch-path .build-release`. If the toolchain can't do both arches in one call, it builds each arch into its own scratch path and joins them with `lipo -create`. It checks the result with `lipo -archs`.
+- Assembles `out/MsgBridge.app/Contents/{MacOS/MsgBridge,Info.plist,Resources/release-evidence.json}`. There are no embedded frameworks.
+- Info.plist sets `CFBundleIdentifier` to `com.adityaverma.msgbridge`, `CFBundleName` and `CFBundleDisplayName` to "MsgBridge", `CFBundleExecutable` to `MsgBridge`, `CFBundleShortVersionString` from `AppIdentity.version`, `LSUIElement` true, `LSMultipleInstancesProhibited` true, `LSMinimumSystemVersion` 14.0, `NSAppleEventsUsageDescription` and `NSAccessibilityUsageDescription`.
 - Entitlements contain only `com.apple.security.automation.apple-events`. No `get-task-allow`, `allow-dyld-environment-variables` or `disable-library-validation`.
 - Signing reads `SIGN_IDENTITY`, `SIGN_KEYCHAIN` and `SIGN_KEYCHAIN_PW_FILE` from the environment. If any is unset or the identity isn't in that keychain, the script exits nonzero and builds nothing unsigned. It unlocks the keychain from the password file, adds it to the user search list for the signing step, and restores the old search list in a `trap` on exit.
-- It signs the app with `codesign --force --options runtime --timestamp=none --keychain "$SIGN_KEYCHAIN" --sign "$SIGN_IDENTITY" --entitlements packaging/entitlements.plist --identifier io.github.krishhgg.imessage-agent`. It signs the CLI with the same identity, the runtime option and the identifier `io.github.krishhgg.imessage-agent.cli`.
+- It signs the app with `codesign --force --options runtime --timestamp=none --keychain "$SIGN_KEYCHAIN" --sign "$SIGN_IDENTITY" --entitlements packaging/entitlements.plist --identifier com.adityaverma.msgbridge`. It signs the CLI with the same identity, the runtime option and the identifier `com.adityaverma.msgbridge.cli`.
 - It checks the result with `codesign --verify --strict --deep` and `codesign -d --entitlements -`. The designated requirement must be the bundle id plus the certificate root, not a cdhash; the script prints it and fails if it contains `cdhash`.
-- It writes `out/imessage-agent-<version>.tar.gz` holding the app, the CLI, the LaunchAgent template, the skill folder and `install.sh`, plus `out/SHA256SUMS`.
+- It writes `out/msgbridge-<version>.tar.gz` holding the app, the CLI, the LaunchAgent template, the skill folder and `install.sh`, plus `out/SHA256SUMS`.
 
 ### LaunchAgent plist
 
-- `Label`: `io.github.krishhgg.imessage-agent`.
-- `Program`: `~/Applications/iMessage Agent.app/Contents/MacOS/IMessageAgent`, expanded to an absolute path at install.
-- `AssociatedBundleIdentifiers`: `io.github.krishhgg.imessage-agent`.
+- `Label`: `com.adityaverma.msgbridge`.
+- `Program`: `~/Applications/MsgBridge.app/Contents/MacOS/MsgBridge`, expanded to an absolute path at install.
+- `AssociatedBundleIdentifiers`: `com.adityaverma.msgbridge`.
 - `LimitLoadToSessionType`: `Aqua`. `ProcessType`: `Interactive`.
 - `Sockets` / `Listener`: `SockPathName` is the path `Paths.resolvedSocketPath()` gives, 104 bytes or less. `SockPathMode` is 384 (0600).
-- `StandardErrorPath`: `~/Library/Application Support/iMessage Agent/bridge.log`.
+- `StandardErrorPath`: `~/Library/Application Support/MsgBridge/bridge.log`.
 - No `EnvironmentVariables` key.
 
 ### install.sh
 
 - Takes no network actions of its own beyond fetching the tarball for the tag. It doesn't use git, Homebrew, Xcode or Python. It never sends Apple Events.
 - Checks the tarball's SHA-256 against the value pinned in the script and stops on mismatch.
-- Installs the app at `~/Applications/iMessage Agent.app`, the CLI at `~/.local/bin/imessage` and the LaunchAgent at `~/Library/LaunchAgents/io.github.krishhgg.imessage-agent.plist`.
+- Installs the app at `~/Applications/MsgBridge.app`, the CLI at `~/.local/bin/imessage` and the LaunchAgent at `~/Library/LaunchAgents/com.adityaverma.msgbridge.plist`.
 - Registers the app with `lsregister -f`. Runs `launchctl bootout` for an old job, then `launchctl bootstrap gui/<uid>`.
 - Writes an install manifest under the app-support folder listing every path it created.
 - `--skill-dir <dir>` copies `skill/imessage` into `<dir>/imessage`, for example `~/.agents/skills` or `~/.claude/skills`, and adds it to the manifest.
-- `--uninstall` boots out the job and removes every path in the manifest, the skill copies included. It deletes the Keychain item and the app-support, cache and staging folders. It prints `tccutil reset SystemPolicyAllFiles io.github.krishhgg.imessage-agent`, `tccutil reset AppleEvents io.github.krishhgg.imessage-agent` and `tccutil reset Accessibility io.github.krishhgg.imessage-agent` for the user to run.
+- `--uninstall` boots out the job and removes every path in the manifest, the skill copies included. It deletes the Keychain item and the app-support, cache and staging folders. It prints `tccutil reset SystemPolicyAllFiles com.adityaverma.msgbridge`, `tccutil reset AppleEvents com.adityaverma.msgbridge` and `tccutil reset Accessibility com.adityaverma.msgbridge` for the user to run.
 
 ### INSTALL.md, README.md and the skill
 

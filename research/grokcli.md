@@ -1,4 +1,4 @@
-# Grok CLI research for a shared iMessage agent repo
+# Grok CLI research for a shared msgbridge repo
 
 Date: 2026-11-05.
 

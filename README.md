@@ -1,12 +1,12 @@
-# iMessage Agent
+# MsgBridge
 
-iMessage Agent lets an agent read, search and send iMessage and SMS on your Mac, and add tapbacks, unsend and edit, through one command, `imessage`. It was built for Grok Bot and also works with grok CLI, Codex and Claude Code.
+MsgBridge lets an agent read, search and send iMessage and SMS on your Mac, and add tapbacks, unsend and edit, through one command, `imessage`. It was built for Grok Bot and also works with grok CLI, Codex and Claude Code.
 
 It runs on your Mac with no server, relay or paid service. The text the CLI prints goes to whatever model your agent uses, the same as any other shell output.
 
 ## How it works
 
-- `~/Applications/iMessage Agent.app` is a background app with no Dock icon, called the bridge. It is the only process that gets permissions: Full Disk Access to read `chat.db`, Automation for Messages to send, and Accessibility for tapbacks, unsend and edit. A LaunchAgent starts it when the CLI connects.
+- `~/Applications/MsgBridge.app` is a background app with no Dock icon, called the bridge. It is the only process that gets permissions: Full Disk Access to read `chat.db`, Automation for Messages to send, and Accessibility for tapbacks, unsend and edit. A LaunchAgent starts it when the CLI connects.
 - `~/.local/bin/imessage` holds no permissions. It sends named requests to the bridge over a Unix socket and prints one short line per message. No SQL crosses the socket.
 - The bridge opens `chat.db` read-only and runs fixed queries with bound parameters.
 - The `imessage` skill tells the agent how to call the CLI. Its body is 400 tokens.
@@ -19,7 +19,7 @@ Requires macOS 14 or later.
 
 No release is published yet. Until the first one is, the install steps below stop at the download, so build from source instead (see [Building from source](#building-from-source)).
 
-In Grok Bot, turn on local execution for your Mac and say "Set up iMessage from https://github.com/krishhgg/imessage-agent". Grok Bot follows [INSTALL.md](INSTALL.md). It asks before installing, checks the download against the SHA-256 pinned in INSTALL.md, and walks you through the permission prompts.
+In Grok Bot, turn on local execution for your Mac and say "Set up iMessage from https://github.com/KING-MOI/msgbridge". Grok Bot follows [INSTALL.md](INSTALL.md). It asks before installing, checks the download against the SHA-256 pinned in INSTALL.md, and walks you through the permission prompts.
 
 For grok CLI, Codex or Claude Code, follow the same file. Step 3 adds `--skill-dir ~/.agents/skills` (grok CLI and Codex) or `--skill-dir ~/.claude/skills` (Claude Code) so install.sh copies the skill there.
 
@@ -85,7 +85,7 @@ Releases are signed with a self-signed certificate and aren't notarized. install
 ## Uninstall
 
 ```
-/bin/bash "$HOME/Library/Application Support/iMessage Agent/install.sh" --uninstall
+/bin/bash "$HOME/Library/Application Support/MsgBridge/install.sh" --uninstall
 ```
 
 It stops the bridge and removes the app, the CLI, the LaunchAgent, the skill copies install.sh made, the Keychain item and the bridge's data, cache and staging folders. If macOS refuses the Keychain delete, it says so, prints the command to run and exits 1. It then prints three `tccutil reset` commands that clear the bridge's permissions if you run them. In Grok Bot, also delete the `imessage` skill.
@@ -113,7 +113,7 @@ The build also checks the skill's token caps. That needs Python 3 with tiktoken 
 python3 -m venv bench/.venv && bench/.venv/bin/pip install tiktoken==0.14.0
 ```
 
-To install your build, run `IMESSAGE_AGENT_TARBALL="$PWD/out/imessage-agent-<version>.tar.gz" bash out/install.sh` from the repo root. macOS treats a build signed with your own certificate as a different app from a release, even with the same bundle id, so permissions and the Keychain item don't carry over. Uninstall any release first and run the three `tccutil reset` commands the uninstaller prints.
+To install your build, run `MSGBRIDGE_TARBALL="$PWD/out/msgbridge-<version>.tar.gz" bash out/install.sh` from the repo root. macOS treats a build signed with your own certificate as a different app from a release, even with the same bundle id, so permissions and the Keychain item don't carry over. Uninstall any release first and run the three `tccutil reset` commands the uninstaller prints.
 
 The build also rewrites the pins in INSTALL.md. Commit that change only when you tag a release.
 

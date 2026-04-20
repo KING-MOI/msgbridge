@@ -27,7 +27,7 @@ A public repo that a user can point Grok Bot at ("Set up iMessage from <repo URL
 
 ### 1. Bridge app: the only privileged process
 
-`~/Applications/iMessage Agent.app` (working name), Swift, LSUIElement, one universal binary, no embedded frameworks.
+`~/Applications/MsgBridge.app` (working name), Swift, LSUIElement, one universal binary, no embedded frameworks.
 
 **Signing and hardening.**
 - The maintainer signs with a self-signed code-signing certificate. Users never install or trust it. The designated requirement is the bundle id plus the certificate root, not the cdhash. In S1, Full Disk Access and Automation survived two changed, re-signed builds.
@@ -333,4 +333,4 @@ Each run counts every call, skill load, retry and Grok Bot approval card. Tokens
 
 ## Names
 
-Repo `imessage-agent`, CLI `imessage`, app "iMessage Agent".
+Repo `msgbridge`, CLI `imessage`, app "MsgBridge".
