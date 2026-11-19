@@ -19,7 +19,7 @@ Requires macOS 14 or later.
 
 No release is published yet. Until the first one is, the install steps below stop at the download, so build from source instead (see [Building from source](#building-from-source)).
 
-In Grok Bot, turn on local execution for your Mac and say "Set up iMessage from https://github.com/KING-MOI/msgbridge". Grok Bot follows [INSTALL.md](INSTALL.md). It asks before installing, checks the download against the SHA-256 pinned in INSTALL.md, and walks you through the permission prompts.
+In Grok Bot, turn on local execution for your Mac and say "Set up iMessage from https://github.com/pekkaiscool/msgbridge". Grok Bot follows [INSTALL.md](INSTALL.md). It asks before installing, checks the download against the SHA-256 pinned in INSTALL.md, and walks you through the permission prompts.
 
 For grok CLI, Codex or Claude Code, follow the same file. Step 3 adds `--skill-dir ~/.agents/skills` (grok CLI and Codex) or `--skill-dir ~/.claude/skills` (Claude Code) so install.sh copies the skill there.
 

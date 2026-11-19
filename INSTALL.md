@@ -29,7 +29,7 @@ Run this as one shell call. It downloads `install.sh` from the release, checks i
 ```
 TAG="unreleased"
 SHA256="unreleased"
-t="$(mktemp -d)" && /usr/bin/curl -fsSL --proto '=https' --tlsv1.2 -o "$t/install.sh" "https://github.com/KING-MOI/msgbridge/releases/download/$TAG/install.sh" && echo "$SHA256  $t/install.sh" | /usr/bin/shasum -a 256 -c - && /bin/bash "$t/install.sh"
+t="$(mktemp -d)" && /usr/bin/curl -fsSL --proto '=https' --tlsv1.2 -o "$t/install.sh" "https://github.com/pekkaiscool/msgbridge/releases/download/$TAG/install.sh" && echo "$SHA256  $t/install.sh" | /usr/bin/shasum -a 256 -c - && /bin/bash "$t/install.sh"
 ```
 
 If `TAG` above is `unreleased`, there is no release yet, so stop and tell the user. If the download fails, the check fails or install.sh prints an `error:` line, stop and show the user the error. Never edit the pinned values and never run install.sh without the check.

@@ -22,7 +22,7 @@ set -euo pipefail
 PINNED_VERSION=""
 PINNED_TARBALL_SHA256=""
 
-REPO_URL="https://github.com/KING-MOI/msgbridge"
+REPO_URL="https://github.com/pekkaiscool/msgbridge"
 LABEL="com.adityaverma.msgbridge"
 BUNDLE_ID="com.adityaverma.msgbridge"
 APP_NAME="MsgBridge"
